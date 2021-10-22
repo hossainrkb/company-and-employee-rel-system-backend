@@ -17,8 +17,13 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => 'api','middleware'=>'auth_admin'], function () use ($router) {
-    $router->group(['prefix' => 'admin'], function () use ($router) {
-        $router->get('companies', 'CompanyController@index');
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->group(['prefix' => 'admin', 'middleware' => 'auth_admin'], function () use ($router) {
+       /*admin*/
+        $router->post('profile', 'AdminController@getAdmin');
+        $router->post('logout', 'AdminController@logout');
+        /*company*/
+        $router->post('companies', 'CompanyController@index');
+        $router->post('add-companies', 'CompanyController@store');
     });
 });

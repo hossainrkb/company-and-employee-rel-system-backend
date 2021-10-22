@@ -24,7 +24,15 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
-        //
+       $companies = Company::create([
+           'email'=> $request->email,
+           'name'=> $request->name,
+           'username'=> $request->username,
+       ]);
+       return response()->json([
+           'status' => 'ok',
+           'data' => $companies
+       ]);
     }
 
     public function show(Company $company)

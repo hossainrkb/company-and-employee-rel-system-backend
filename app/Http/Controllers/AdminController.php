@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Psr\Http\Message\ServerRequestInterface;
+use Laravel\Passport\Http\Controllers\AccessTokenController;
+use Nyholm\Psr7\Response as Psr7Response;
 
-class AdminController extends Controller
+class AdminController extends AccessTokenController
 {
     /**
      * Display a listing of the resource.
@@ -81,5 +85,23 @@ class AdminController extends Controller
     public function destroy(Admin $admin)
     {
         //
+    }
+    public function getAdmin()
+    {
+        if(Auth::guard('admin_api')->user()){
+            return Auth::guard('admin_api')->user();
+        }else{
+            return null;
+        }
+    }
+    public function logout()
+    {
+        if(Auth::guard('admin_api')->user()){
+            Auth::guard('admin_api')->user()->AauthAcessToken()->delete();
+            // auth('admin_api')->logout();
+            return true;
+        }else{
+            return null;
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
 class AuthenticateAdmin
@@ -35,6 +36,10 @@ class AuthenticateAdmin
      */
     public function handle($request, Closure $next, $guard = "admin_api")
     {
+        // return $request->method();
+        // return $this->auth->guard($guard)->guest();
+        // return $request->bearerToken();
+        // return auth()->guard('admin_api')->user();
         if ($this->auth->guard($guard)->guest()) {
             return response('Unauthorized.', 401);
         }
