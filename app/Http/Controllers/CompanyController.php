@@ -24,15 +24,15 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
-       $companies = Company::create([
-           'email'=> $request->email,
-           'name'=> $request->name,
-           'username'=> $request->username,
-       ]);
-       return response()->json([
-           'status' => 'ok',
-           'data' => $companies
-       ]);
+        $companies = Company::create([
+            'email' => $request->email,
+            'name' => $request->name,
+            'username' => $request->username,
+        ]);
+        return response()->json([
+            'status' => 'ok',
+            'data' => $companies
+        ]);
     }
 
     public function show(Company $company)
@@ -44,13 +44,27 @@ class CompanyController extends Controller
     {
         //
     }
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $company)
     {
-        //
+        $company = Company::find($company);
+        $company->update([
+            'email' => $request->email,
+            'name' => $request->name,
+            'username' => $request->username,
+        ]);
+        return response()->json([
+            'status' => 'ok',
+            'data' => $company
+        ]);
     }
 
-    public function destroy(Company $company)
+    public function destroy($company)
     {
-        //
+        $company = Company::find($company);
+        $company->delete();
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Delete Successfully'
+        ]);
     }
 }

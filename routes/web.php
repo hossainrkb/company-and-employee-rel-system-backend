@@ -24,6 +24,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('logout', 'AdminController@logout');
         /*company*/
         $router->post('companies', 'CompanyController@index');
-        $router->post('add-companies', 'CompanyController@store');
+        $router->post('add-company', 'CompanyController@store');
+        $router->post('{company}/update-company', 'CompanyController@update');
+        $router->post('{company}/destroy-company', 'CompanyController@destroy');
     });
 });

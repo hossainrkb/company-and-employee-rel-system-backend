@@ -88,19 +88,24 @@ class AdminController extends AccessTokenController
     }
     public function getAdmin()
     {
-        if(Auth::guard('admin_api')->user()){
-            return Auth::guard('admin_api')->user();
-        }else{
-            return null;
+        if (Auth::guard('admin_api')->user()) {
+            return response()->json([
+                'status' => 'ok',
+                'data' => Auth::guard('admin_api')->user()
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+            ]);
         }
     }
     public function logout()
     {
-        if(Auth::guard('admin_api')->user()){
+        if (Auth::guard('admin_api')->user()) {
             Auth::guard('admin_api')->user()->AauthAcessToken()->delete();
             // auth('admin_api')->logout();
             return true;
-        }else{
+        } else {
             return null;
         }
     }
