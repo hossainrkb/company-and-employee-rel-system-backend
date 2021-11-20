@@ -21,7 +21,7 @@ class CreateCompaniesTable extends Migration
             $table->string('password',255)->nullable();
             $table->timestamp('current_sub_start_from')->nullable();
             $table->timestamp('current_sub_when_end')->nullable();
-            $table->decimal('sub_fee',12,5)->nullable();
+            $table->integer('subcription_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
