@@ -82,7 +82,7 @@ $app->configure('cors');
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
 $app->routeMiddleware([
-    'auth_admin' => App\Http\Middleware\AuthenticateAdmin::class,
+    'auth_api' => App\Http\Middleware\AuthenticateApi::class,
 ]);
 
 $app->middleware([

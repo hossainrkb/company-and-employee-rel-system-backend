@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Nyholm\Psr7\Response as Psr7Response;
 use Psr\Http\Message\ServerRequestInterface;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
-use Nyholm\Psr7\Response as Psr7Response;
 
 class AdminController extends AccessTokenController
 {
@@ -108,5 +109,23 @@ class AdminController extends AccessTokenController
         } else {
             return null;
         }
+    }
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()->all()]);
+        }
+        $user = Admin::where('email', request()->email)->where('password', request()->password)->first();
+        Auth::login($user);
+            $success =  $user;
+            $success['token'] =  $user->createToken('MyApp',['admin'])->accessToken; 
+
+            return response()->json($success, 200);
+      
     }
 }

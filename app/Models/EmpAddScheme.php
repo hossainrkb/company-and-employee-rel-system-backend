@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmpAddScheme extends Model
 {
-    //
+    protected $table = 'emp_add_schemes';
 }

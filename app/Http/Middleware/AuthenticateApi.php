@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
-class AuthenticateAdmin
+class AuthenticateApi
 {
     /**
      * The authentication guard factory instance.
@@ -34,7 +34,7 @@ class AuthenticateAdmin
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = "admin_api")
+    public function handle($request, Closure $next, $guard)
     {
         if ($this->auth->guard($guard)->guest()) {
             return response('Unauthorized.', 401);

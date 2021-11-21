@@ -18,7 +18,7 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->group(['prefix' => 'admin', 'middleware' => 'auth_admin'], function () use ($router) {
+    $router->group(['prefix' => 'admin', 'middleware' => 'auth_api:admin_api'], function () use ($router) {
        /*admin*/
         $router->post('profile', 'AdminController@getAdmin');
         $router->post('logout', 'AdminController@logout');
@@ -28,4 +28,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('{company}/update-company', 'CompanyController@update');
         $router->post('{company}/destroy-company', 'CompanyController@destroy');
     });
+    $router->post('admin/login', 'AdminController@login');
+    //Company
+    $router->group(['prefix' => 'company', 'middleware' => 'auth_api:company_api'], function () use ($router) {
+         $router->post('{companyId}/add-employee', 'CompanyController@addEmployee');
+         $router->post('{companyId}/list-employee', 'CompanyController@companyEmployee');
+     });
 });
