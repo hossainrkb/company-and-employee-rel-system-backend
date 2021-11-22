@@ -31,6 +31,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('admin/login', 'AdminController@login');
     //Company
     $router->group(['prefix' => 'company', 'middleware' => 'auth_api:company_api'], function () use ($router) {
+        $router->post('profile', 'CompanyController@getCompany');
          $router->post('{companyId}/add-employee', 'CompanyController@addEmployee');
          $router->post('{companyId}/list-employee', 'CompanyController@companyEmployee');
      });

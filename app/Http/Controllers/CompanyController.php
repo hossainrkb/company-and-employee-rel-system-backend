@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Company;
 use App\Models\EmpAddScheme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
@@ -100,6 +101,19 @@ class CompanyController extends Controller
     {
         $company = Company::find($companyId);
         return success_response('Employee List', ['company' => $company, 'employees' => $company->employees]);
+    }
+    public function getCompany()
+    {
+        if (Auth::guard('company_api')->user()) {
+            return response()->json([
+                'status' => 'ok',
+                'data' => Auth::guard('company_api')->user()
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+            ]);
+        }
     }
     private function parseParam($request)
     {
