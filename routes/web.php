@@ -18,21 +18,28 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
+    /*Admin Route*/
     $router->group(['prefix' => 'admin', 'middleware' => 'auth_api:admin_api'], function () use ($router) {
-       /*admin*/
         $router->post('profile', 'AdminController@getAdmin');
         $router->post('logout', 'AdminController@logout');
-        /*company*/
         $router->post('companies', 'CompanyController@index');
         $router->post('add-company', 'CompanyController@store');
         $router->post('{company}/update-company', 'CompanyController@update');
         $router->post('{company}/destroy-company', 'CompanyController@destroy');
     });
     $router->post('admin/login', 'AdminController@login');
-    //Company
+    /*Company Route */
     $router->group(['prefix' => 'company', 'middleware' => 'auth_api:company_api'], function () use ($router) {
         $router->post('profile', 'CompanyController@getCompany');
          $router->post('{companyId}/add-employee', 'CompanyController@addEmployee');
          $router->post('{companyId}/list-employee', 'CompanyController@companyEmployee');
+         $router->post('{companyId}/leave-application-employee', 'EmpLeaveDetailController@comEmpLeaveStore');
+         $router->post('{companyId}/pending-application-employee', 'EmpLeaveDetailController@pendingLeaveList');
+         $router->post('{companyId}/leave/{leaveId}/decline', 'EmpLeaveDetailController@empLeaveStatusDecline');
+         $router->post('{companyId}/leave/{leaveId}/approve', 'EmpLeaveDetailController@empLeaveStatusApprove');
+     });
+    /*Employee Route */
+    $router->group(['prefix' => 'employee', 'middleware' => 'auth_api:employee_api'], function () use ($router) {
+        $router->post('profile', 'EmployeeController@getEmployee');
      });
 });

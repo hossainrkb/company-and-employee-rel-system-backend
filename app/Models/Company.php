@@ -22,4 +22,7 @@ class Company extends BaseModel implements AuthenticatableContract, Authorizable
     public function employees(){
         return $this->hasMany(Employee::class,'company_id','id');
     }
+    public function leave(){
+        return $this->hasMany(EmpLeaveDetail::class,'com_id','id');
+    }
 }

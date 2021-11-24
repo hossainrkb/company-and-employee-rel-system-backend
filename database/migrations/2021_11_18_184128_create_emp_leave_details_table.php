@@ -20,6 +20,7 @@ class CreateEmpLeaveDetailsTable extends Migration
             $table->unsignedBigInteger('leave_type')->nullable();
             $table->timestamp('from_date')->nullable();
             $table->timestamp('to_date')->nullable();
+            $table->text('leave_message')->nullable();
             $table->timestamps();
         });
     }

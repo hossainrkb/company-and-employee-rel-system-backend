@@ -3,83 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmpLeaveDetail;
+use App\Traits\EmpLeaveTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmpLeaveDetailController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    use EmpLeaveTrait;
+    public function empLeaveStore(Request $request)
     {
-        //
+        try {
+            return $this->leave($request);
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function comEmpLeaveStore(Request $request)
     {
-        //
+        try {
+            return $this->leave($request, true);
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function empLeaveStatusApprove(Request $request, $leaveId)
     {
-        //
+        try {
+            $leaveRow = EmpLeaveDetail::find($leaveId);
+            $leaveRow->empCurrentLeave()->update([
+                'current_leave_status' => ON_LEAVE
+            ]);
+            return success_response("Leave Status Approved");
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\EmpLeaveDetail  $empLeaveDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function show(EmpLeaveDetail $empLeaveDetail)
+    public function empLeaveStatusDecline(Request $request, $leaveId)
     {
-        //
+        try {
+            $leaveRow = EmpLeaveDetail::find($leaveId);
+            if (!$leaveRow->empCurrentLeave) return error_response("No Cuurent Emp Found On This Leave ID");
+            $leaveRow->empCurrentLeave()->update([
+                'current_leave_status' => AVAILABLE_LEAVE,
+                'current_leave_id' => NULL,
+            ]);
+            return success_response("Leave Status Decline");
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\EmpLeaveDetail  $empLeaveDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(EmpLeaveDetail $empLeaveDetail)
+    public function pendingLeaveList()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EmpLeaveDetail  $empLeaveDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, EmpLeaveDetail $empLeaveDetail)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\EmpLeaveDetail  $empLeaveDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(EmpLeaveDetail $empLeaveDetail)
-    {
-        //
+        try {
+            $company = Auth::guard('company_api')->user();
+            $data =  $company->employees()->with('currentLeave')->where('current_leave_status', PENDING_LEAVE)->get();
+            return success_response("Pending Leave Application", $data);
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
 }
