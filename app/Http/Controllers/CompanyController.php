@@ -102,6 +102,26 @@ class CompanyController extends Controller
         $company = Company::find($companyId);
         return success_response('Employee List', ['company' => $company, 'employees' => $company->employees]);
     }
+    public function companyDashboard($companyId)
+    {
+        $company = Company::find($companyId);
+        $returnAbleArray = [];
+        $returnAbleArray['total_emp'] = count($company->employees);
+        $returnAbleArray['remain_quota'] = $company->empAddScheme->qty - count($company->employees);
+        $returnAbleArray['total_attendance_on_day'] = $company->empAttendance()->where('on_date', date("Y-m-d"))->count();
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, date("m"), date("Y"));
+        $totalEmpWorkingHrs = 0;
+        $startDay = date("Y") . "-" . date("m") . "-" . "1";
+        $endDay = date("Y") . "-" . date("m") . "-" . $daysInMonth;
+        $currentMonthAttendance =  $company->empAttendance()->whereBetween('on_date', [$startDay, $endDay])->get();
+        foreach ($currentMonthAttendance as $key => $attendance) {
+            $totalEmpWorkingHrs += isset($attendance->check_out) && isset($attendance->check_in) ? Carbon::parse($attendance->check_out)->diffInHours(Carbon::parse($attendance->check_in)) : null;
+        }
+        $returnAbleArray['total_emp_working_hrs'] = $totalEmpWorkingHrs;
+        $returnAbleArray['latest_five_pending_leave_application'] = $company->employees()->with('currentLeave')->where('current_leave_status', PENDING_LEAVE)->whereNotNull('current_leave_id')->get();
+
+        return success_response(null, ['company' => $company, 'status' => $returnAbleArray]);
+    }
     public function getCompany()
     {
         if (Auth::guard('company_api')->user()) {

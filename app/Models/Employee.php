@@ -15,4 +15,7 @@ class Employee extends Model
     public function currentLeave(){
         return $this->belongsTo(EmpLeaveDetail::class,'current_leave_id','id');
     }
+    public function attendance(){
+        return $this->hasMany(EmpAttendance::class,'emp_id','id');
+    }
 }

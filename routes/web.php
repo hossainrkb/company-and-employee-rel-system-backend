@@ -31,15 +31,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     /*Company Route */
     $router->group(['prefix' => 'company', 'middleware' => 'auth_api:company_api'], function () use ($router) {
         $router->post('profile', 'CompanyController@getCompany');
+         $router->post('{companyId}/dashboard', 'CompanyController@companyDashboard');
          $router->post('{companyId}/add-employee', 'CompanyController@addEmployee');
          $router->post('{companyId}/list-employee', 'CompanyController@companyEmployee');
          $router->post('{companyId}/leave-application-employee', 'EmpLeaveDetailController@comEmpLeaveStore');
          $router->post('{companyId}/pending-application-employee', 'EmpLeaveDetailController@pendingLeaveList');
          $router->post('{companyId}/leave/{leaveId}/decline', 'EmpLeaveDetailController@empLeaveStatusDecline');
          $router->post('{companyId}/leave/{leaveId}/approve', 'EmpLeaveDetailController@empLeaveStatusApprove');
+         $router->post('{companyId}/{employeeId}/{month}/{year}/attendance-summary', 'EmpAttendanceController@empAttendanceDetaiilsBaseedOnMonthYear');
+         $router->post('{companyId}/attendance', 'EmpAttendanceController@empAttendanceDetails');
      });
     /*Employee Route */
-    $router->group(['prefix' => 'employee', 'middleware' => 'auth_api:employee_api'], function () use ($router) {
+    // $router->group(['prefix' => 'employee', 'middleware' => 'auth_api:employee_api'], function () use ($router) {
+    $router->group(['prefix' => 'employee'], function () use ($router) {
         $router->post('profile', 'EmployeeController@getEmployee');
+        $router->post('{employeeId}/check-in', 'EmpAttendanceController@checkInStore');
+        $router->post('{employeeId}/{attendanceId}/check-out', 'EmpAttendanceController@checkOutStore');
      });
 });

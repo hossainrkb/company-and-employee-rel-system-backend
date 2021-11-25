@@ -17,6 +17,7 @@ class CreateEmpAttendancesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('emp_id');
             $table->unsignedBigInteger('com_id');
+            $table->timestamp('on_date')->nullable();
             $table->timestamp('check_in')->nullable();
             $table->timestamp('check_out')->nullable();
             $table->timestamps();

@@ -2,84 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EmpAttendance;
 use Illuminate\Http\Request;
+use App\Models\EmpAttendance;
+use App\Traits\EmpLeaveAttendanceTrait;
 
 class EmpAttendanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    use EmpLeaveAttendanceTrait;
+    public function checkInStore(Request $request, $employeeId)
     {
-        //
+        try {
+            return $this->checkIn($request, $employeeId);
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function checkOutStore(Request $request, $employeeId, $attendanceId)
     {
-        //
+        try {
+            return $this->checkOut($request, $employeeId, $attendanceId);
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function empAttendanceDetaiilsBaseedOnMonthYear($companyId, $employeeId, $month, $year)
     {
-        //
+        try {
+            return $this->empMonthAttendance($companyId, $employeeId, $month, $year);
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\EmpAttendance  $empAttendance
-     * @return \Illuminate\Http\Response
-     */
-    public function show(EmpAttendance $empAttendance)
+    public function empAttendanceDetails()
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\EmpAttendance  $empAttendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(EmpAttendance $empAttendance)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EmpAttendance  $empAttendance
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, EmpAttendance $empAttendance)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\EmpAttendance  $empAttendance
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(EmpAttendance $empAttendance)
-    {
-        //
+        try {
+            return success_response(null, ['month' => month_list(), 'year' => last_three_year()]);
+        } catch (\Throwable $th) {
+            return error_response($th->getMessage());
+        }
     }
 }
