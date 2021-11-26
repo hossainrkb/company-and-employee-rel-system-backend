@@ -118,7 +118,7 @@ class CompanyController extends Controller
             $totalEmpWorkingHrs += isset($attendance->check_out) && isset($attendance->check_in) ? Carbon::parse($attendance->check_out)->diffInHours(Carbon::parse($attendance->check_in)) : null;
         }
         $returnAbleArray['total_emp_working_hrs'] = $totalEmpWorkingHrs;
-        $returnAbleArray['latest_five_pending_leave_application'] = $company->employees()->with('currentLeave')->where('current_leave_status', PENDING_LEAVE)->whereNotNull('current_leave_id')->get();
+        $returnAbleArray['latest_five_pending_leave_application'] = $company->employees()->has('currentLeave')->with('currentLeave')->where('current_leave_status', PENDING_LEAVE)->whereNotNull('current_leave_id')->get();
 
         return success_response(null, ['company' => $company, 'status' => $returnAbleArray]);
     }

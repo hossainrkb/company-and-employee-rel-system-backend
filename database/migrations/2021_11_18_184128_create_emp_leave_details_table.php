@@ -21,6 +21,7 @@ class CreateEmpLeaveDetailsTable extends Migration
             $table->timestamp('from_date')->nullable();
             $table->timestamp('to_date')->nullable();
             $table->text('leave_message')->nullable();
+            $table->boolean('leave_status_track')->default(false);
             $table->timestamps();
         });
     }

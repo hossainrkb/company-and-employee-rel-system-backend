@@ -39,6 +39,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          $router->post('{companyId}/leave/{leaveId}/decline', 'EmpLeaveDetailController@empLeaveStatusDecline');
          $router->post('{companyId}/leave/{leaveId}/approve', 'EmpLeaveDetailController@empLeaveStatusApprove');
          $router->post('{companyId}/{employeeId}/{month}/{year}/attendance-summary', 'EmpAttendanceController@empAttendanceDetaiilsBaseedOnMonthYear');
+         $router->post('{companyId}/current-month-attendance-summary', 'EmpAttendanceController@attendanceDetaiilsCurrentMonth');
          $router->post('{companyId}/attendance', 'EmpAttendanceController@empAttendanceDetails');
      });
     /*Employee Route */

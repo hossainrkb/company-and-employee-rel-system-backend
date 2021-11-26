@@ -20,7 +20,7 @@ trait EmpLeaveTrait
             $leaveDetails = $com->leave()->create(array_merge($data, $this->parseLeaveRequest($request)));
             $emp = Employee::find($request->employee_id);
             $emp->update([
-                'current_leave_status' => 2,
+                'current_leave_status' => PENDING_LEAVE,
                 'current_leave_id' => $leaveDetails->id
             ]);
             return success_response('Employee Leave Status Updated', ['employee' => $emp, 'leave_status' => $leaveDetails]);
@@ -44,6 +44,7 @@ trait EmpLeaveTrait
         $data['from_date'] = $request->from_date;
         $data['to_date'] = $request->to_date;
         $data['leave_message'] = $request->leave_message;
+        $data['leave_status_track'] = PENDING_LEAVE;
         return $data;
     }
     private function checkEmpCurrentStatus($empId)
