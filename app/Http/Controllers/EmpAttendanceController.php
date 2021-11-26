@@ -25,14 +25,6 @@ class EmpAttendanceController extends Controller
             return error_response($th->getMessage());
         }
     }
-    public function empAttendanceDetaiilsBaseedOnMonthYear($companyId, $employeeId)
-    {
-        try {
-            return $this->empMonthAttendance($companyId, $employeeId, "November", "2021");
-        } catch (\Throwable $th) {
-            return error_response($th->getMessage());
-        }
-    }
     public function attendanceDetaiilsCurrentMonth($companyId)
     {
         try {

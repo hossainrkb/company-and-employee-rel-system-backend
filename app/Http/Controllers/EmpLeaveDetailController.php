@@ -30,6 +30,9 @@ class EmpLeaveDetailController extends Controller
     {
         try {
             $leaveRow = EmpLeaveDetail::find($leaveId);
+            $leaveRow->update([
+                'leave_status_track' => ON_LEAVE
+            ]);
             $leaveRow->empCurrentLeave()->update([
                 'current_leave_status' => ON_LEAVE
             ]);
@@ -43,6 +46,9 @@ class EmpLeaveDetailController extends Controller
         try {
             $leaveRow = EmpLeaveDetail::find($leaveId);
             if (!$leaveRow->empCurrentLeave) return error_response("No Cuurent Emp Found On This Leave ID");
+            $leaveRow->update([
+                'leave_status_track' => AVAILABLE_LEAVE
+            ]);
             $leaveRow->empCurrentLeave()->update([
                 'current_leave_status' => AVAILABLE_LEAVE,
                 'current_leave_id' => NULL,

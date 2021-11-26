@@ -38,9 +38,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          $router->post('{companyId}/pending-application-employee', 'EmpLeaveDetailController@pendingLeaveList');
          $router->post('{companyId}/leave/{leaveId}/decline', 'EmpLeaveDetailController@empLeaveStatusDecline');
          $router->post('{companyId}/leave/{leaveId}/approve', 'EmpLeaveDetailController@empLeaveStatusApprove');
-         $router->post('{companyId}/{employeeId}/{month}/{year}/attendance-summary', 'EmpAttendanceController@empAttendanceDetaiilsBaseedOnMonthYear');
          $router->post('{companyId}/current-month-attendance-summary', 'EmpAttendanceController@attendanceDetaiilsCurrentMonth');
          $router->post('{companyId}/attendance', 'EmpAttendanceController@empAttendanceDetails');
+         $router->post('{companyId}/{employeeId}/{month}/{year}/emp-stat-details', 'EmployeeController@empStatDetails');
+         $router->post('{companyId}/emp-stat/create', 'EmployeeController@empStatCreate');
      });
     /*Employee Route */
     // $router->group(['prefix' => 'employee', 'middleware' => 'auth_api:employee_api'], function () use ($router) {
