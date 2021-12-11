@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Company;
 use App\Models\EmpAddScheme;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -101,6 +102,27 @@ class CompanyController extends Controller
     {
         $company = Company::find($companyId);
         return success_response('Employee List', ['company' => $company, 'employees' => $company->employees]);
+    }
+    public function editEmployee($companyId, $employeeId)
+    {
+        $employee = Employee::find($employeeId);
+        return success_response('Delete Successfull', ['employee' => $employee]);
+    }
+    public function updateEmployee(Request $request, $companyId, $employeeId)
+    {
+        $employee = Employee::find($employeeId);
+        $employee->update([
+            'name'         => $request->name,
+            'email'        => $request->email,
+            'phone_number' => $request->phone_number,
+        ]);
+        return success_response('Update Successfull', ['employee' => $employee]);
+    }
+    public function destroyEmployee($companyId, $employeeId)
+    {
+        $employee = Employee::find($employeeId);
+        $employee->delete();
+        return success_response('Delete Successfull');
     }
     public function companyDashboard($companyId)
     {

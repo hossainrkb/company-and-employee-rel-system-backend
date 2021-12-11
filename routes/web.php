@@ -33,6 +33,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('profile', 'CompanyController@getCompany');
          $router->post('{companyId}/dashboard', 'CompanyController@companyDashboard');
          $router->post('{companyId}/add-employee', 'CompanyController@addEmployee');
+         $router->post('{companyId}/employee/{employeeId}/edit', 'CompanyController@editEmployee');
+         $router->post('{companyId}/employee/{employeeId}/update', 'CompanyController@updateEmployee');
+         $router->post('{companyId}/employee/{employeeId}/delete', 'CompanyController@destroyEmployee');
          $router->post('{companyId}/list-employee', 'CompanyController@companyEmployee');
          $router->post('{companyId}/leave-application-employee', 'EmpLeaveDetailController@comEmpLeaveStore');
          $router->post('{companyId}/pending-application-employee', 'EmpLeaveDetailController@pendingLeaveList');
