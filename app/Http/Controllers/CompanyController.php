@@ -106,7 +106,7 @@ class CompanyController extends Controller
     public function editEmployee($companyId, $employeeId)
     {
         $employee = Employee::find($employeeId);
-        return success_response('Delete Successfull', ['employee' => $employee]);
+        return success_response('Successfull', $employee);
     }
     public function updateEmployee(Request $request, $companyId, $employeeId)
     {
@@ -116,7 +116,7 @@ class CompanyController extends Controller
             'email'        => $request->email,
             'phone_number' => $request->phone_number,
         ]);
-        return success_response('Update Successfull', ['employee' => $employee]);
+        return success_response('Update Successfull', $employee);
     }
     public function destroyEmployee($companyId, $employeeId)
     {
