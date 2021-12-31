@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\EmpAttendance;
 use App\Traits\EmpLeaveAttendanceTrait;
 
-class EmpAttendanceController extends Controller
+class EmpAttendanceController extends CentralController
 {
     use EmpLeaveAttendanceTrait;
     public function checkInStore(Request $request, $employeeId)

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EmpAddScheme;
 use Illuminate\Http\Request;
 
-class EmpAddSchemeController extends Controller
+class EmpAddSchemeController extends CentralController
 {
     /**
      * Display a listing of the resource.

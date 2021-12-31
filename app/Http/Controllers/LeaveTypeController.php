@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LeaveType;
 use Illuminate\Http\Request;
 
-class LeaveTypeController extends Controller
+class LeaveTypeController extends CentralController
 {
     /**
      * Display a listing of the resource.

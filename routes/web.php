@@ -45,6 +45,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          $router->post('{companyId}/attendance', 'EmpAttendanceController@empAttendanceDetails');
          $router->post('{companyId}/{employeeId}/{month}/{year}/emp-stat-details', 'EmployeeController@empStatDetails');
          $router->post('{companyId}/emp-stat/create', 'EmployeeController@empStatCreate');
+         /* Employee Automated Salary API */
+         $router->group(['prefix' => '{companyId}/sslcommerz'], function () use ($router) {
+             $router->post('create-session','EmployeeAutomatedSalarySystemSSLCOMMERZ@createSession');
+         });
      });
     /*Employee Route */
     // $router->group(['prefix' => 'employee', 'middleware' => 'auth_api:employee_api'], function () use ($router) {

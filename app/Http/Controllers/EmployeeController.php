@@ -7,7 +7,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Traits\EmpDetailsTrait;
 
-class EmployeeController extends Controller
+class EmployeeController extends CentralController
 {
     use EmpDetailsTrait;
     public function empStatCreate($companyId)

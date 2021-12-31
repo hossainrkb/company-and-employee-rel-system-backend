@@ -7,7 +7,7 @@ use App\Traits\EmpLeaveTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class EmpLeaveDetailController extends Controller
+class EmpLeaveDetailController extends CentralController
 {
     use EmpLeaveTrait;
     public function empLeaveStore(Request $request)
