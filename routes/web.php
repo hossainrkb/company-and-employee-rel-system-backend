@@ -48,12 +48,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          /* Employee Automated Salary API */
          $router->group(['prefix' => '{companyId}/sslcommerz'], function () use ($router) {
              $router->post('create-session','EmployeeAutomatedSalarySystemSSLCOMMERZController@createSession');
-             $router->post('success-path','EmployeeAutomatedSalarySystemSSLCOMMERZController@successMethod');
-             $router->post('fail-path','EmployeeAutomatedSalarySystemSSLCOMMERZController@failMethod');
-             $router->post('cancel-path','EmployeeAutomatedSalarySystemSSLCOMMERZController@cancelMethod');
-             $router->post('ipn-path','EmployeeAutomatedSalarySystemSSLCOMMERZController@ipnMethod');
-         });
-     });
+            });
+        });
+        $router->group(['prefix' => 'sslcommerz'], function () use ($router) {
+        $router->post('success-path','EmployeeAutomatedSalarySystemSSLCOMMERZController@successMethod');
+        $router->post('fail-path','EmployeeAutomatedSalarySystemSSLCOMMERZController@failMethod');
+        $router->post('cancel-path','EmployeeAutomatedSalarySystemSSLCOMMERZController@cancelMethod');
+        $router->post('sslcommerz/ipn-path','EmployeeAutomatedSalarySystemSSLCOMMERZController@ipnMethod');
+        });
     /*Employee Route */
     // $router->group(['prefix' => 'employee', 'middleware' => 'auth_api:employee_api'], function () use ($router) {
     $router->group(['prefix' => 'employee'], function () use ($router) {
