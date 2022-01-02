@@ -7,6 +7,7 @@ class CorsMiddleware {
   {
     if(strpos($request->url(),"oauth/token"))return  $next($request);
     if(strpos($request->url(),"sslcommerz/success-path"))return  $next($request);
+    if(strpos($request->url(),"sslcommerz/ipn-path"))return  $next($request);
     $headers = [
       'Access-Control-Allow-Origin'      => '*',
       'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',

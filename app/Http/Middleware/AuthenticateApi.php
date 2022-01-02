@@ -37,6 +37,7 @@ class AuthenticateApi
     public function handle($request, Closure $next, $guard)
     {
         if (strpos($request->url(), 'sslcommerz/success-path'))   return $next($request);
+        if(strpos($request->url(), "sslcommerz/ipn-path"))return  $next($request);
         if ($this->auth->guard($guard)->guest()) {
             return response('Unauthorized.', 401);
         }

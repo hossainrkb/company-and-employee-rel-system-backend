@@ -13,6 +13,7 @@ interface SslCommerzInterface
     const currency         = 'currency';
     const tran_id          = 'tran_id';
     const success_url      = 'success_url';
+    const ipn_url      = 'ipn_url';
     const fail_url         = 'fail_url';
     const cancel_url       = 'cancel_url';
     const cus_name         = 'cus_name';

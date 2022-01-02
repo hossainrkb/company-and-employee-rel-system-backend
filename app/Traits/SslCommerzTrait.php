@@ -7,34 +7,62 @@ use Illuminate\Support\Facades\Http;
 
 trait SslCommerzTrait
 {
-    public function sslcommerzcreateSession(Request $request, $companyId)
+    public function sslcommerzcreateSession($request, $employee)
     {
-                   $post_data              = array();
-                   $trx                    = "SSLCZ_TEST_" . generateRandomString();
-        $post_data[self::store_id]         = env('SANDBOX_STORE_ID');
-        $post_data[self::store_passwd]     = env('SANDBOX_STORE_PASSWORD');
-        $post_data[self::total_amount]     = "103";
-        $post_data[self::currency]         = "BDT";
-        $post_data[self::tran_id]          = $trx;
-        $post_data[self::success_url]      = env('BASE_URL') . "api/sslcommerz/success-path";
-        $post_data[self::fail_url]         = env('BASE_URL') . "api/sslcommerz/fail-path";
-        $post_data[self::cancel_url]       = env('BASE_URL') . "api/sslcommerz/cancel-path";
-        $post_data[self::cus_name]         = "Test Customer";
-        $post_data[self::cus_email]        = "test@test.com";
-        $post_data[self::cus_add1]         = "Dhaka";
-        $post_data[self::cus_add2]         = "Dhaka";
-        $post_data[self::cus_city]         = "Dhaka";
-        $post_data[self::cus_state]        = "Dhaka";
-        $post_data[self::cus_postcode]     = "1000";
-        $post_data[self::cus_country]      = "Bangladesh";
-        $post_data[self::cus_phone]        = "01711111111";
-        $post_data[self::cus_fax]          = "01711111111";
-        $post_data[self::shipping_method]  = "NO";
-        $post_data[self::num_of_item]      = 5;
-        $post_data[self::product_name]     = "hola";
-        $post_data[self::product_category] = "salary";
-        $post_data[self::product_profile]  = "general";
-        $response = Http::asForm()->post(self::SANDBOX_CREATE_SESSION_API, $post_data);
+        $post_data          = array();
+        $post_data[self::store_id]     = env('SANDBOX_STORE_ID');
+        $post_data[self::store_passwd] = env('SANDBOX_STORE_PASSWORD');
+        $post_data[self::total_amount] = $request['salary_amount'];
+        $post_data[self::currency]     = "BDT";
+        $post_data[self::tran_id]      = $request['trx'];
+
+        $response = Http::asForm()->post(
+            self::SANDBOX_CREATE_SESSION_API,
+            array_merge(
+                $post_data,
+                $this->parseEmpReqForSession($employee),
+                $this->parseShipmentReqForSession(),
+                $this->parseProductReqForSession(),
+                $this->parseReqUrlForSession(),
+            )
+        );
         return $response->body();
+    }
+
+    private function parseEmpReqForSession($employee)
+    {
+        return [
+            self::cus_name     => $employee->name ?? "Test",
+            self::cus_email    => $employee->email ?? "Test@email.com",
+            self::cus_add1     => 'Add One',
+            self::cus_city     => 'Chittagong',
+            self::cus_postcode => '4226',
+            self::cus_country  => 'Bangladesh',
+            self::cus_phone    => '01790507933',
+        ];
+    }
+    private function parseShipmentReqForSession()
+    {
+        return [
+            self::shipping_method => 'NO',
+            self::num_of_item     => 1,
+        ];
+    }
+    private function parseProductReqForSession()
+    {
+        return [
+            self::product_name     => 'Employee Salary',
+            self::product_category => 'Maney',
+            self::product_profile  => 'general',
+        ];
+    }
+    private function parseReqUrlForSession()
+    {
+        return [
+            self::success_url      => env('BASE_URL') . "api/sslcommerz/success-path",
+            self::fail_url         => env('BASE_URL') . "api/sslcommerz/fail-path",
+            self::cancel_url       => env('BASE_URL') . "api/sslcommerz/cancel-path",
+            self::ipn_url          => env('BASE_URL') . "api/sslcommerz/ipn-path",
+        ];
     }
 }
