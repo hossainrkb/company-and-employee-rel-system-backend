@@ -37,24 +37,17 @@ class EmployeeAutomatedSalarySystemSSLCOMMERZController extends CentralControlle
     }
     public function successMethod(Request $request)
     {
-        // dd($request->all());
-        $explode_verify_key = explode(",",$request->verify_key);
-        $data = [];
-        foreach ($explode_verify_key as $key => $value) {
-            $data[$value] = $request->$value;
-        }
-        $data['store_passwd'] = md5(env('SANDBOX_STORE_PASSWORD'));
-        ksort($data);
-        $hash_string = "";
-        foreach ($data as $key => $value) {
-            $hash_string .= $key . '=' . ($value) . '&';
-        }
-        if(md5(trim($hash_string,"&")) == $request->verify_sign){
-            return true;
+        if(!$request->tran_id) return error_response("Tranx Key Not FOund");
+        $empSalary = EmpSalary::where('trx_key',$request->tran_id)->first();
+        if(isset($empSalary->salary_status) && $empSalary->salary_status=="PENDING"){
+            if(is_bool($this->validateSuccess($request))){
+                return success_response('Payment Successfully Done');
+            }else{
+                return $this->validateSuccess($request);
+            }
         }else{
-            return false;
+            return error_response("Payment already processed");
         }
-        return $request->all();
     }
     public function ipnMethod(Request $request)
     {

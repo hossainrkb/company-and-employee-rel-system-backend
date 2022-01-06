@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\EmpSalary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -64,5 +65,48 @@ trait SslCommerzTrait
             self::cancel_url       => env('BASE_URL') . "api/sslcommerz/cancel-path",
             self::ipn_url          => env('BASE_URL') . "api/sslcommerz/ipn-path",
         ];
+    }
+
+    private function validateSuccess($request)
+    {
+        if ($this->verifySign($request)) {
+            $post_data = [
+                'val_id' => $request->val_id,
+                'store_id' => env('SANDBOX_STORE_ID'),
+                'store_passwd' => env('SANDBOX_STORE_PASSWORD'),
+                'format' => 'json',
+                'v' => 1
+            ];
+            //  dd($post_data);
+            $response = Http::get(
+                self::SANDBOX_PAYMENT_VALIDATE_API,
+                $post_data,
+            );
+            $response_obj = json_decode($response->body());
+            $empSalary = EmpSalary::where('trx_key', $response_obj->tran_id)->first();
+            $empSalary->update(['salary_status' => 'PROCESSED']);
+            return true;
+        } else {
+            return error_response('Verification Sign doesn"t match');
+        }
+    }
+    private function verifySign($request)
+    {
+        $explode_verify_key = explode(",", $request->verify_key);
+        $data = [];
+        foreach ($explode_verify_key as $key => $value) {
+            $data[$value] = $request->$value;
+        }
+        $data['store_passwd'] = md5(env('SANDBOX_STORE_PASSWORD'));
+        ksort($data);
+        $hash_string = "";
+        foreach ($data as $key => $value) {
+            $hash_string .= $key . '=' . ($value) . '&';
+        }
+        if (md5(trim($hash_string, "&")) == $request->verify_sign) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

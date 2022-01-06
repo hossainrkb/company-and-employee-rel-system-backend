@@ -6,6 +6,7 @@ interface SslCommerzInterface
 {
     /* API List */
     const SANDBOX_CREATE_SESSION_API = "https://sandbox.sslcommerz.com/gwprocess/v4/api.php";
+    const SANDBOX_PAYMENT_VALIDATE_API = "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php";
     /* Payment Create Session Variable */
     const store_id         = 'store_id';
     const store_passwd     = 'store_passwd';
