@@ -38,9 +38,10 @@ class CompanyController extends CentralController
         //
     }
 
-    public function edit(Company $company)
+    public function edit($company)
     {
-        //
+        $company = Company::find($company);
+        return success_response(null,$company);
     }
     public function update(Request $request, $company)
     {
