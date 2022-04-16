@@ -15,10 +15,7 @@ class CompanyController extends CentralController
     public function index()
     {
         $companies = Company::all();
-        return response()->json([
-            'status' => 'ok',
-            'data' => $companies
-        ]);
+        return success_response(null,$companies);
     }
 
 
@@ -59,10 +56,7 @@ class CompanyController extends CentralController
     {
         $company = Company::find($company);
         $company->delete();
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'Delete Successfully'
-        ]);
+        return success_response('Deleted Successfully');
     }
     public function addEmployee(Request $request, $companyId)
     {
