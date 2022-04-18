@@ -33,6 +33,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'company', 'middleware' => 'auth_api:company_api'], function () use ($router) {
         $router->post('profile', 'CompanyController@getCompany');
          $router->post('{companyId}/dashboard', 'CompanyController@companyDashboard');
+         $router->post('{companyId}/logout', 'CompanyController@logout');
          $router->post('{companyId}/add-employee', 'CompanyController@addEmployee');
          $router->post('{companyId}/employee/{employeeId}/edit', 'CompanyController@editEmployee');
          $router->post('{companyId}/employee/{employeeId}/update', 'CompanyController@updateEmployee');

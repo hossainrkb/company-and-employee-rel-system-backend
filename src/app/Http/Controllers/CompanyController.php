@@ -152,6 +152,15 @@ class CompanyController extends CentralController
             ]);
         }
     }
+    public function logout()
+    {
+        if (Auth::guard('company_api')->user()) {
+            Auth::guard('company_api')->user()->AauthAcessToken()->delete();
+            return true;
+        } else {
+            return null;
+        }
+    }
     private function parseParam($request)
     {
         return [

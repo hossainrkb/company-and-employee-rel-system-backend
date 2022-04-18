@@ -35,4 +35,7 @@ class Company extends BaseModel implements AuthenticatableContract, Authorizable
     {
         return $this->hasMany(EmpAttendance::class, 'com_id', 'id');
     }
+    public function AauthAcessToken(){
+        return $this->hasMany(OauthAccessToken::class,'user_id','id');
+    }
 }
