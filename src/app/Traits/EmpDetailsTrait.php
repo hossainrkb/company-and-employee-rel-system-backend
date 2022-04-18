@@ -12,10 +12,12 @@ trait EmpDetailsTrait
 {
     public function empStat($comId, $empId, $month, $year)
     {
-        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, identify_month($month), $year);
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $returnAbleArray = [];
         for ($i = 1; $i <= $daysInMonth; $i++) {
-            $makeDate = $year . "-" . identify_month($month) . "-" . $i;
+            $dayValue = strlen($i)>1?$i:"0$i";
+            $monthValue = strlen($month)>1?$month:"0$month";
+            $makeDate = $year . "-" . $monthValue . "-" . $dayValue;
             $getAttendance = EmpAttendance::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->where('on_date', $makeDate)->first();
             $returnAbleArray[$i] = [
                 'date'           => $makeDate,
@@ -28,10 +30,10 @@ trait EmpDetailsTrait
             ];
         }
         $leaveApplication = [];
-        $leaveApplication['total_leave_application'] = EmpLeaveDetail::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->whereMonth('from_date', identify_month($month))->whereYear('from_date', $year)->count();
-        $leaveApplication['total_approved_leave_application'] = EmpLeaveDetail::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->where('leave_status_track',ON_LEAVE)->whereMonth('from_date', identify_month($month))->whereYear('from_date', $year)->count();
-        $leaveApplication['total_decline_leave_application'] = EmpLeaveDetail::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->where('leave_status_track',AVAILABLE_LEAVE)->whereMonth('from_date', identify_month($month))->whereYear('from_date', $year)->count();
-        $leaveApplication['total_pending_leave_application'] = EmpLeaveDetail::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->where('leave_status_track',PENDING_LEAVE)->whereMonth('from_date', identify_month($month))->whereYear('from_date', $year)->count();
+        $leaveApplication['total_leave_application'] = EmpLeaveDetail::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->whereMonth('from_date', $month)->whereYear('from_date', $year)->count();
+        $leaveApplication['total_approved_leave_application'] = EmpLeaveDetail::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->where('leave_status_track',ON_LEAVE)->whereMonth('from_date', $month)->whereYear('from_date', $year)->count();
+        $leaveApplication['total_decline_leave_application'] = EmpLeaveDetail::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->where('leave_status_track',AVAILABLE_LEAVE)->whereMonth('from_date', $month)->whereYear('from_date', $year)->count();
+        $leaveApplication['total_pending_leave_application'] = EmpLeaveDetail::where('emp_id', '=', $empId)->where('com_id', '=', $comId)->where('leave_status_track',PENDING_LEAVE)->whereMonth('from_date', $month)->whereYear('from_date', $year)->count();
         $emp = Employee::find($empId);
         return success_response('Employee Attendance Sheet', ['leave_application'=> $leaveApplication,'employee' => $emp->load('company'), 'records' => $returnAbleArray]);
     }
