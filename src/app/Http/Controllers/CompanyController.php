@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Company;
-use App\Models\EmpAddScheme;
 use App\Models\Employee;
+use App\Models\EmpSalary;
+use App\Models\EmpAddScheme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -136,6 +137,22 @@ class CompanyController extends CentralController
         }
         $returnAbleArray['total_emp_working_hrs'] = $totalEmpWorkingHrs;
         $returnAbleArray['latest_five_pending_leave_application'] = $company->employees()->has('currentLeave')->with('currentLeave')->where('current_leave_status', PENDING_LEAVE)->whereNotNull('current_leave_id')->get();
+        $successPayment =  EmpSalary::where([
+            'com_id' => $company->id,
+            'month' => (int)date("m"),
+            'year' => date("Y"),
+            'salary_status' => 'PROCESSED',
+        ])->sum('salary_amount');
+        $pendingPayment =  EmpSalary::where([
+            'com_id' => $company->id,
+            'month' => (int)date("m"),
+            'year' => date("Y"),
+            'salary_status' => 'PENDING',
+        ])->sum('salary_amount');
+        $returnAbleArray['emp_salary_stat'] = [
+            'success'=>$successPayment,
+            'pending'=>$pendingPayment,
+        ];
 
         return success_response(null, ['company' => $company, 'status' => $returnAbleArray]);
     }
