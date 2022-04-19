@@ -48,8 +48,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
          $router->post('{companyId}/{employeeId}/{month}/{year}/emp-stat-details', 'EmployeeController@empStatDetails');
          $router->post('{companyId}/emp-stat/create', 'EmployeeController@empStatCreate');
          /* Employee Automated Salary API */
-         $router->group(['prefix' => '{companyId}/{employeeId}/sslcommerz'], function () use ($router) {
-             $router->post('create-session','EmployeeAutomatedSalarySystemSSLCOMMERZController@createSession');
+         $router->group(['prefix' => '{companyId}/{employeeId}'], function () use ($router) {
+             $router->post('/sslcommerz/create-session','EmployeeAutomatedSalarySystemSSLCOMMERZController@createSession');
+             $router->post('/salary-details','EmployeeAutomatedSalarySystemSSLCOMMERZController@empSalaryDetails');
             });
         });
         $router->group(['prefix' => 'sslcommerz'], function () use ($router) {

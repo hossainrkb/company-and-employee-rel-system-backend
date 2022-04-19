@@ -72,7 +72,8 @@ trait SslCommerzTrait
         if ($this->verifySign($request)) {
             $post_data = [
                 'val_id' => $request->val_id,
-                'store_id' => env('SANDBOX_STORE_ID'),
+                // 'store_id' => env('SANDBOX_STORE_ID'),
+                'store_id' => $request->acc_no,
                 'store_passwd' => env('SANDBOX_STORE_PASSWORD'),
                 'format' => 'json',
                 'v' => 1
@@ -84,8 +85,12 @@ trait SslCommerzTrait
             );
             $response_obj = json_decode($response->body());
             $empSalary = EmpSalary::where('trx_key', $response_obj->tran_id)->first();
-            $empSalary->update(['salary_status' => 'PROCESSED']);
-            return true;
+            if($empSalary){
+                $empSalary->update(['salary_status' => 'PROCESSED']);
+                return true;
+            }else{
+                return false;
+            }
         } else {
             return error_response('Verification Sign doesn"t match');
         }

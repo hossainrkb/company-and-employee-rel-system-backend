@@ -23,6 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('company_id')->nullable();
             $table->boolean('current_leave_status')->default(false);
             $table->unsignedBigInteger('current_leave_id')->nullable();
+            $table->string('acc_no')->nullable();
             $table->timestamps();
         });
     }

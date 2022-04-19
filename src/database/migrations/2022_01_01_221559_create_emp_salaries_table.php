@@ -24,6 +24,7 @@ class CreateEmpSalariesTable extends Migration
             $table->string('salary_type')->comment('BASIC, MISC etc');
             $table->string('salary_status')->comment('PENDING,PROCESSING etc');
             $table->string('salary_currency');
+            $table->text('misc_details')->nullable();
             $table->timestamps();
         });
     }
