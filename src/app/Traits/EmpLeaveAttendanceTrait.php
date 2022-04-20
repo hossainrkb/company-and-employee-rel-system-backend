@@ -20,12 +20,16 @@ trait EmpLeaveAttendanceTrait
         $attendanceDetails = $emp->attendance()->create(array_merge($data, $this->parseCheckInRequest($request)));
         return success_response('Employee Successfully CheckedIn', ['employee' => $emp, 'status' => $attendanceDetails]);
     }
-    public function checkOut($request, $empId, $attendanceId)
+    public function checkOut($request, $empId)
     {
         $emp                     = Employee::find($empId);
-        $checkAlreadCheckInOrNot = EmpAttendance::find($attendanceId);
+        $currentDate = date("Y-m-d");
+        $attendance = EmpAttendance::where(['emp_id' => $empId, 'com_id' => $emp->company_id, 'on_date' => $currentDate])->first();
+        if(is_null($attendance)) return error_response('Today"s Check In Not Given Yet ..');
+        if(!is_null($attendance->check_out)) return error_response('You Already Checked Out..');
+        $checkAlreadCheckInOrNot = EmpAttendance::find($attendance->id);
         if (!$checkAlreadCheckInOrNot) return error_response('Not Checked In Today', ['employee' => $emp]);
-        $checkAlreadCheckInOrNot->update(['check_out' => $request->check_out]);
+        $checkAlreadCheckInOrNot->update(['check_out' => Carbon::now()->toDateTImeString()]);
         return success_response('Employee Successfully CheckedOut', ['employee' => $emp, 'status' => $checkAlreadCheckInOrNot]);
     }
     public function currentMonthAttendance($comId)
@@ -41,8 +45,8 @@ trait EmpLeaveAttendanceTrait
                     'date'           => $makeDate,
                     'employee'           => $employee,
                     'attendance'     => $getAttendance ?? null,
-                    'checkIn'        => isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_in)->format("Y-m-d: h:m:s") : null,
-                    'checkOut'       => isset($getAttendance->check_out) ? Carbon::parse($getAttendance->check_out)->format("Y-m-d: h:m:s") : null,
+                    'checkIn'        => isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_in)->format("Y-m-d: h:i:s") : null,
+                    'checkOut'       => isset($getAttendance->check_out) ? Carbon::parse($getAttendance->check_out)->format("Y-m-d: h:i:s") : null,
                     'dayTotalHours'  => isset($getAttendance->check_out) && isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_out)->diffInHours(Carbon::parse($getAttendance->check_in)) : null,
                     'dayTotalMin'    => isset($getAttendance->check_out) && isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_out)->diffInMinutes(Carbon::parse($getAttendance->check_in)) : null,
                     'dayTotalSecond' => isset($getAttendance->check_out) && isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_out)->diffInSeconds(Carbon::parse($getAttendance->check_in)) : null,
@@ -56,7 +60,7 @@ trait EmpLeaveAttendanceTrait
     {
         $data = [];
         $data['on_date'] = date("Y-m-d");
-        $data['check_in'] = $request->check_in;
+        $data['check_in'] = Carbon::now()->toDateTImeString();
         return $data;
     }
 }

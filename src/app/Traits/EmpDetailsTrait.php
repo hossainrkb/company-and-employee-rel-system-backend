@@ -22,8 +22,8 @@ trait EmpDetailsTrait
             $returnAbleArray[$i] = [
                 'date'           => $makeDate,
                 'attendance'     => $getAttendance ?? null,
-                'checkIn'        => isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_in)->format("Y-m-d: h:m:s") : null,
-                'checkOut'       => isset($getAttendance->check_out) ? Carbon::parse($getAttendance->check_out)->format("Y-m-d: h:m:s") : null,
+                'checkIn'        => isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_in)->format("Y-m-d: h:i:s") : null,
+                'checkOut'       => isset($getAttendance->check_out) ? Carbon::parse($getAttendance->check_out)->format("Y-m-d: h:i:s") : null,
                 'dayTotalHours'  => isset($getAttendance->check_out) && isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_out)->diffInHours(Carbon::parse($getAttendance->check_in)) : null,
                 'dayTotalMin'    => isset($getAttendance->check_out) && isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_out)->diffInMinutes(Carbon::parse($getAttendance->check_in)) : null,
                 'dayTotalSecond' => isset($getAttendance->check_out) && isset($getAttendance->check_in) ? Carbon::parse($getAttendance->check_out)->diffInSeconds(Carbon::parse($getAttendance->check_in)) : null,
