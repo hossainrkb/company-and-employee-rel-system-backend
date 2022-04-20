@@ -18,6 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('phone_number')->unique()->nullable();
+            $table->string('password')->nullable();
             $table->integer('department')->nullable();
             $table->integer('designation')->nullable();
             $table->integer('company_id')->nullable();
