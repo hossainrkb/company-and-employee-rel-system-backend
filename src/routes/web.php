@@ -63,7 +63,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // $router->group(['prefix' => 'employee', 'middleware' => 'auth_api:employee_api'], function () use ($router) {
     $router->group(['prefix' => 'employee'], function () use ($router) {
         $router->post('profile', 'EmployeeController@getEmployee');
+        $router->post('logout', 'EmployeeController@logout');
         $router->post('{employeeId}/check-in', 'EmpAttendanceController@checkInStore');
-        $router->post('{employeeId}/{attendanceId}/check-out', 'EmpAttendanceController@checkOutStore');
+        $router->post('{employeeId}/check-out', 'EmpAttendanceController@checkOutStore');
      });
 });
