@@ -17,10 +17,10 @@ class EmpAttendanceController extends CentralController
             return error_response($th->getMessage());
         }
     }
-    public function checkOutStore(Request $request, $employeeId, $attendanceId)
+    public function checkOutStore(Request $request, $employeeId)
     {
         try {
-            return $this->checkOut($request, $employeeId, $attendanceId);
+            return $this->checkOut($request, $employeeId);
         } catch (\Throwable $th) {
             return error_response($th->getMessage());
         }
