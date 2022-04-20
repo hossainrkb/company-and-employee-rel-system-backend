@@ -12,6 +12,10 @@ return [
             'driver' => 'passport',
             'provider' => 'company',
         ],
+        'employee_api' => [
+            'driver' => 'passport',
+            'provider' => 'employee',
+        ],
     ],
 
     'providers' => [
@@ -22,6 +26,10 @@ return [
         'company' => [
             'driver' => 'eloquent',
             'model' => \App\Models\Company::class
+        ],
+        'employee' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Employee::class
         ]
     ]
 ];
