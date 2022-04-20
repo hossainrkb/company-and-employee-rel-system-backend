@@ -4,6 +4,7 @@
 const PENDING_LEAVE = 2;
 const ON_LEAVE = 1;
 const AVAILABLE_LEAVE = 0;
+const DECLINE = -1;
 
 /* Global Function */
 function error_response($message = null, $data = [])

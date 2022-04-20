@@ -66,5 +66,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('logout', 'EmployeeController@logout');
         $router->post('{employeeId}/check-in', 'EmpAttendanceController@checkInStore');
         $router->post('{employeeId}/check-out', 'EmpAttendanceController@checkOutStore');
+        $router->post('{employeeId}/leave-application-employee', 'EmpLeaveDetailController@empLeaveStore');
+        $router->post('{employeeId}/leave-application-logs', 'EmpLeaveDetailController@empLeaveApplicationLogs');
      });
 });
